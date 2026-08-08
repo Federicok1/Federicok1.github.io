@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>£¥ POUNDYEN — El club de los soñadores</title>
+<link rel="icon" href="poundyen-logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;0,6..96,600;0,6..96,900;1,6..96,400;1,6..96,600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --void:#070605;
+    --surface:#121110;
+    --surface-2:#1a1816;
+    --blood:#c8121a;
+    --ember:#ff5a45;
+    --bone:#edeae4;
+    --ash:#8c8680;
+    --hair: rgba(237,234,228,0.10);
+    --font-display: 'Bodoni Moda', 'Times New Roman', serif;
+    --font-body: 'Inter', -apple-system, sans-serif;
+    --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  }
+
+  *{ box-sizing:border-box; margin:0; padding:0; }
+
+  html{ scroll-behavior:smooth; }
+
+  body{
+    background:var(--void);
+    color:var(--bone);
+    font-family:var(--font-body);
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+
+  a{ color:inherit; text-decoration:none; }
+
+  ::selection{ background:var(--blood); color:var(--bone); }
+
+  :focus-visible{
+    outline:2px solid var(--ember);
+    outline-offset:3px;
+  }
+
+  /* film grain overlay */
+  .grain{
+    position:fixed; inset:0; pointer-events:none; z-index:200;
+    opacity:0.05; mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .eyebrow{
+    font-family:var(--font-mono);
+    font-size:0.72rem;
+    letter-spacing:0.28em;
+    text-transform:uppercase;
+    color:var(--ash);
+  }
+
+  .eyebrow em{
+    color:var(--ember);
+    font-style:normal;
+  }
+
+  /* ---------- NAV ---------- */
+  nav{
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:1.4rem clamp(1.25rem, 4vw, 3.5rem);
+    transition:background .4s ease, border-color .4s ease, backdrop-filter .4s ease;
+    border-bottom:1px solid transparent;
+  }
+  nav.scrolled{
+    background:rgba(7,6,5,0.82);
+    backdrop-filter:blur(10px);
+    border-bottom-color:var(--hair);
+  }
+  .nav-mark{
+    display:flex; align-items:center; gap:0.65rem;
+  }
+  .nav-mark img{ height:32px; width:auto; filter:drop-shadow(0 0 5px rgba(200,18,26,0.7)) drop-shadow(0 0 14px rgba(200,18,26,0.4)); }
+  .nav-mark span{
+    font-family:var(--font-mono);
+    font-size:0.75rem;
+    letter-spacing:0.24em;
+    color:var(--bone);
+  }
+  .nav-links{ display:flex; gap:clamp(1rem,3vw,2.2rem); }
+  .nav-links a{
+    font-family:var(--font-mono);
+    font-size:0.72rem;
+    letter-spacing:0.2em;
+    text-transform:uppercase;
+    color:var(--ash);
+    position:relative;
+    padding-bottom:3px;
+  }
+  .nav-links a::after{
+    content:''; position:absolute; left:0; bottom:0; width:0; height:1px;
+    background:var(--blood); transition:width .3s ease;
+  }
+  .nav-links a:hover{ color:var(--bone); }
+  .nav-links a:hover::after{ width:100%; }
+  .nav-cta{
+    font-family:var(--font-mono); font-size:0.7rem; letter-spacing:0.18em;
+    text-transform:uppercase; color:var(--bone);
+    border:1px solid var(--hair); padding:0.55rem 1.1rem; border-radius:2px;
+    transition:border-color .3s ease, background .3s ease;
+  }
+  .nav-cta:hover{ border-color:var(--blood); background:rgba(200,18,26,0.08); }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    min-height:100svh;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-align:center;
+    padding:6rem 1.5rem 3rem;
+    overflow:hidden;
+  }
+
+  .constellation{
+    position:absolute; inset:0; width:100%; height:100%;
+    stroke:var(--blood);
+    opacity:0.55;
+  }
+  .constellation .glow-line{
+    filter:drop-shadow(0 0 4px rgba(200,18,26,0.85)) drop-shadow(0 0 12px rgba(255,90,69,0.35));
+    animation:pulse-line 7s ease-in-out infinite;
+  }
+  .constellation .node{ fill:var(--ember); filter:drop-shadow(0 0 5px rgba(255,90,69,0.9)); }
+  .constellation .cluster-a{ animation-delay:0s; }
+  .constellation .cluster-b{ animation-delay:2.3s; }
+
+  @keyframes pulse-line{
+    0%,100%{ opacity:0.35; }
+    50%{ opacity:0.85; }
+  }
+
+  .hero-inner{
+    position:relative; z-index:2;
+    display:flex; flex-direction:column; align-items:center;
+    opacity:0; transform:translateY(14px);
+    animation:rise 1.3s cubic-bezier(.16,.9,.35,1) forwards;
+    animation-delay:.2s;
+  }
+
+  @keyframes rise{ to{ opacity:1; transform:translateY(0); } }
+
+  .hero-mark{
+    width:min(46vw, 260px);
+    height:auto;
+    filter:drop-shadow(0 0 26px rgba(200,18,26,0.65)) drop-shadow(0 0 60px rgba(200,18,26,0.4)) drop-shadow(0 0 110px rgba(255,90,69,0.22));
+    margin-bottom:1.6rem;
+    animation:mark-pulse 5s ease-in-out infinite;
+  }
+
+  @keyframes mark-pulse{
+    0%,100%{ filter:drop-shadow(0 0 26px rgba(200,18,26,0.65)) drop-shadow(0 0 60px rgba(200,18,26,0.4)) drop-shadow(0 0 110px rgba(255,90,69,0.22)); }
+    50%{ filter:drop-shadow(0 0 32px rgba(200,18,26,0.85)) drop-shadow(0 0 80px rgba(200,18,26,0.55)) drop-shadow(0 0 140px rgba(255,90,69,0.32)); }
+  }
+
+  .hero-word{
+    font-family:var(--font-display);
+    font-weight:900;
+    font-size:clamp(2.6rem, 9vw, 6.2rem);
+    letter-spacing:0.045em;
+    line-height:0.95;
+    color:var(--bone);
+  }
+
+  .hero-tagline{
+    font-family:var(--font-display);
+    font-style:italic;
+    font-weight:400;
+    font-size:clamp(1.05rem, 2.4vw, 1.5rem);
+    color:var(--ash);
+    margin-top:0.9rem;
+  }
+
+  .hero-eyebrow{ margin-bottom:1.3rem; }
+
+  .scroll-cue{
+    position:absolute; bottom:2.4rem; left:50%; transform:translateX(-50%);
+    display:flex; flex-direction:column; align-items:center; gap:0.5rem;
+    z-index:2;
+  }
+  .scroll-cue span{
+    font-family:var(--font-mono); font-size:0.62rem; letter-spacing:0.3em;
+    text-transform:uppercase; color:var(--ash);
+  }
+  .scroll-cue .line{
+    width:1px; height:34px; background:linear-gradient(var(--blood), transparent);
+    animation:drop 2.2s ease-in-out infinite;
+  }
+  @keyframes drop{
+    0%{ transform:scaleY(0); transform-origin:top; opacity:0; }
+    40%{ transform:scaleY(1); transform-origin:top; opacity:1; }
+    60%{ transform:scaleY(1); transform-origin:bottom; opacity:1; }
+    100%{ transform:scaleY(0); transform-origin:bottom; opacity:0; }
+  }
+
+  /* ---------- TICKER ---------- */
+  .ticker{
+    position:relative;
+    border-top:1px solid var(--hair);
+    border-bottom:1px solid var(--hair);
+    overflow:hidden;
+    padding:1.1rem 0;
+    background:var(--void);
+  }
+  .ticker-track{
+    display:flex; width:max-content;
+    animation:ticker-scroll 26s linear infinite;
+  }
+  .ticker-track span{
+    display:inline-flex; align-items:center;
+    font-family:var(--font-display);
+    font-weight:900;
+    font-size:clamp(1.3rem, 3vw, 2.1rem);
+    color:var(--blood);
+    text-shadow:0 0 8px rgba(200,18,26,0.7), 0 0 30px rgba(200,18,26,0.35);
+    white-space:nowrap;
+    padding-right:2.2rem;
+  }
+  .ticker-track span.dim{ color:var(--bone); text-shadow:none; }
+  .ticker-mark{
+    height:0.85em; width:auto; margin-right:2.2rem;
+    filter:drop-shadow(0 0 4px rgba(200,18,26,0.8)) drop-shadow(0 0 14px rgba(200,18,26,0.4));
+  }
+  @keyframes ticker-scroll{
+    from{ transform:translateX(0); }
+    to{ transform:translateX(-50%); }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .ticker-track{ animation:none; }
+    .ticker{ overflow-x:auto; }
+  }
+
+  /* ---------- MANIFESTO ---------- */
+  .manifesto{
+    position:relative;
+    padding:9rem clamp(1.5rem, 8vw, 8rem) 10rem;
+    max-width:1180px; margin:0 auto;
+    overflow:hidden;
+  }
+
+  .manifesto-watermark{
+    position:absolute;
+    top:50%; right:-8%;
+    transform:translateY(-50%);
+    width:min(52vw, 640px);
+    height:auto;
+    opacity:0.07;
+    filter:drop-shadow(0 0 60px rgba(200,18,26,0.5));
+    mix-blend-mode:screen;
+    pointer-events:none;
+    z-index:0;
+  }
+
+  .manifesto-head, .manifesto-body{ position:relative; z-index:1; }
+
+  .manifesto-head{
+    font-family:var(--font-display);
+    font-weight:900;
+    font-size:clamp(2rem, 6vw, 4.2rem);
+    line-height:1.05;
+    letter-spacing:0.01em;
+    margin-bottom:3.2rem;
+  }
+
+  .reveal-line{
+    display:block;
+    overflow:hidden;
+  }
+  .reveal-line span{
+    display:inline-block;
+    transform:translateY(105%);
+    transition:transform .9s cubic-bezier(.16,.9,.35,1);
+  }
+  .reveal-line.is-visible span{ transform:translateY(0); }
+
+  .manifesto-head .reveal-line:nth-child(1) span{ transition-delay:.05s; color:var(--bone); }
+  .manifesto-head .reveal-line:nth-child(2) span{ transition-delay:.18s; color:var(--blood); text-shadow:0 0 26px rgba(200,18,26,0.45); }
+
+  .manifesto-body{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap:2.5rem 4rem;
+    max-width:980px;
+  }
+  .manifesto-body p{
+    font-family:var(--font-body);
+    font-size:clamp(1rem, 1.6vw, 1.15rem);
+    line-height:1.7;
+    color:var(--bone);
+    opacity:0;
+    transform:translateY(16px);
+    transition:opacity .8s ease, transform .8s cubic-bezier(.16,.9,.35,1);
+  }
+  .manifesto-body p.is-visible{ opacity:1; transform:translateY(0); }
+  .manifesto-body p:nth-of-type(1){ transition-delay:.05s; }
+  .manifesto-body p:nth-of-type(2){ transition-delay:.15s; }
+  .manifesto-body p.wide{ grid-column:1 / -1; color:var(--ash); font-style:italic; font-family:var(--font-display); font-size:clamp(1.15rem,2vw,1.45rem); border-top:1px solid var(--hair); padding-top:2rem; margin-top:0.5rem; }
+  .manifesto-body p strong{ color:var(--ember); font-weight:600; }
+
+  @media (max-width: 720px){
+    .manifesto-body{ grid-template-columns:1fr; }
+  }
+
+  /* ---------- DROP ---------- */
+  .drop{
+    position:relative;
+    background:var(--surface);
+    border-top:1px solid var(--hair);
+    border-bottom:1px solid var(--hair);
+    padding:7rem clamp(1.5rem, 8vw, 6rem);
+  }
+
+  .drop-grid{
+    max-width:1180px; margin:0 auto;
+    display:grid; grid-template-columns:1.05fr 0.95fr; gap:clamp(2.5rem,6vw,5rem);
+    align-items:center;
+  }
+
+  @media (max-width:880px){
+    .drop-grid{ grid-template-columns:1fr; }
+  }
+
+  .drop-copy .eyebrow{ margin-bottom:1.1rem; }
+
+  .drop-title{
+    font-family:var(--font-display);
+    font-weight:900;
+    font-size:clamp(1.9rem, 4vw, 3rem);
+    line-height:1.08;
+    margin-bottom:1.4rem;
+  }
+  .drop-title .accent{ color:var(--blood); text-shadow:0 0 24px rgba(200,18,26,0.4); }
+
+  .drop-copy p{
+    color:var(--ash);
+    line-height:1.75;
+    max-width:44ch;
+    margin-bottom:2.2rem;
+  }
+
+  .drop-copy p strong{ color:var(--bone); font-weight:500; }
+
+  .video-frame{
+    position:relative;
+    border:1px solid var(--hair);
+    border-radius:3px;
+    overflow:hidden;
+    background:#000;
+    box-shadow:0 30px 80px -30px rgba(200,18,26,0.35);
+  }
+  .video-frame video{ display:block; width:100%; height:auto; }
+  .video-tag{
+    position:absolute; top:0.9rem; left:0.9rem;
+    font-family:var(--font-mono); font-size:0.62rem; letter-spacing:0.2em;
+    text-transform:uppercase; color:var(--bone);
+    background:rgba(0,0,0,0.55); border:1px solid rgba(237,234,228,0.2);
+    padding:0.35rem 0.6rem; border-radius:2px;
+    backdrop-filter:blur(4px);
+  }
+  .video-tag i{ color:var(--blood); font-style:normal; margin-right:0.4em; }
+
+  /* ---------- WAITLIST ---------- */
+  .join{
+    padding:8rem clamp(1.5rem, 8vw, 6rem) 9rem;
+    text-align:center;
+  }
+  .join-inner{ max-width:640px; margin:0 auto; }
+  .join-mark{
+    width:48px; height:auto; margin:0 auto 1.4rem;
+    display:block;
+    filter:drop-shadow(0 0 16px rgba(200,18,26,0.6)) drop-shadow(0 0 34px rgba(200,18,26,0.3));
+  }
+  .join .eyebrow{ margin-bottom:1.2rem; justify-content:center; display:flex; }
+  .join-title{
+    font-family:var(--font-display);
+    font-weight:900;
+    font-size:clamp(1.8rem, 4.4vw, 2.9rem);
+    line-height:1.12;
+    margin-bottom:1rem;
+  }
+  .join-title .accent{ font-style:italic; color:var(--ember); }
+  .join-sub{ color:var(--ash); margin-bottom:2.6rem; line-height:1.7; }
+
+  .join-form{
+    display:flex; gap:0.75rem; max-width:460px; margin:0 auto;
+    flex-wrap:wrap; justify-content:center;
+  }
+  .join-form input[type="email"]{
+    flex:1 1 240px;
+    background:transparent;
+    border:1px solid var(--hair);
+    border-radius:2px;
+    padding:0.95rem 1.1rem;
+    font-family:var(--font-body);
+    font-size:0.95rem;
+    color:var(--bone);
+    transition:border-color .3s ease;
+  }
+  .join-form input[type="email"]::placeholder{ color:var(--ash); }
+  .join-form input[type="email"]:focus{ border-color:var(--blood); }
+
+  .join-btn{
+    font-family:var(--font-mono);
+    font-size:0.75rem;
+    letter-spacing:0.16em;
+    text-transform:uppercase;
+    color:var(--bone);
+    background:var(--blood);
+    border:1px solid var(--blood);
+    padding:0.95rem 1.5rem;
+    border-radius:2px;
+    cursor:pointer;
+    transition:background .3s ease, box-shadow .3s ease, transform .2s ease;
+    flex:0 0 auto;
+  }
+  .join-btn:hover{ background:#e0141d; box-shadow:0 0 26px rgba(200,18,26,0.5); }
+  .join-btn:active{ transform:translateY(1px); }
+
+  .join-note{
+    margin-top:1rem;
+    font-family:var(--font-mono);
+    font-size:0.68rem;
+    letter-spacing:0.08em;
+    color:var(--ash);
+  }
+
+  .join-confirm{
+    display:none;
+    font-family:var(--font-mono);
+    font-size:0.85rem;
+    letter-spacing:0.06em;
+    color:var(--bone);
+    border:1px solid var(--hair);
+    padding:1.1rem 1.4rem;
+    border-radius:2px;
+    max-width:460px;
+    margin:0 auto;
+  }
+  .join-confirm em{ color:var(--ember); font-style:normal; }
+  .join-confirm.show{ display:block; }
+  .join-form.hide{ display:none; }
+
+  /* ---------- FOOTER ---------- */
+  footer{
+    border-top:1px solid var(--hair);
+    padding:3rem clamp(1.5rem, 8vw, 6rem);
+    display:flex; align-items:center; justify-content:space-between;
+    flex-wrap:wrap; gap:1.5rem;
+  }
+  .foot-mark{ display:flex; align-items:center; gap:0.6rem; }
+  .foot-mark img{ height:24px; filter:drop-shadow(0 0 6px rgba(200,18,26,0.6)); }
+  .foot-mark span{
+    font-family:var(--font-mono); font-size:0.72rem; letter-spacing:0.16em; color:var(--ash);
+  }
+  .foot-links{ display:flex; gap:1.6rem; }
+  .foot-links a{
+    font-family:var(--font-mono); font-size:0.68rem; letter-spacing:0.16em; text-transform:uppercase;
+    color:var(--ash); transition:color .3s ease;
+  }
+  .foot-links a:hover{ color:var(--bone); }
+  .foot-copy{
+    font-family:var(--font-mono); font-size:0.65rem; color:var(--ash); letter-spacing:0.04em;
+    width:100%; text-align:center; padding-top:2rem; border-top:1px solid var(--hair); margin-top:0.5rem;
+  }
+
+  @media (max-width:640px){
+    nav{ padding:1.1rem 1.25rem; }
+    .nav-mark span{ display:none; }
+    .nav-links{ display:none; }
+    .nav-cta{ padding:0.5rem 0.9rem; font-size:0.65rem; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important; scroll-behavior:auto !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="grain"></div>
+
+<nav id="nav">
+  <div class="nav-mark">
+    <img src="poundyen-logo.png" alt="Poundyen">
+    <span>POUNDYEN</span>
+  </div>
+  <div class="nav-links">
+    <a href="#manifiesto">Manifiesto</a>
+    <a href="#drop">Drop</a>
+  </div>
+  <a class="nav-cta" href="#unete">Únete</a>
+</nav>
+
+<header class="hero">
+  <svg class="constellation" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <g class="cluster-a">
+      <line class="glow-line" x1="90" y1="120" x2="230" y2="260"/>
+      <line class="glow-line" x1="230" y1="260" x2="150" y2="380"/>
+      <line class="glow-line" x1="230" y1="260" x2="340" y2="220"/>
+      <line class="glow-line" x1="150" y1="380" x2="60" y2="420"/>
+      <line class="glow-line" x1="340" y1="220" x2="380" y2="90"/>
+      <circle class="node" cx="90" cy="120" r="3"/>
+      <circle class="node" cx="230" cy="260" r="4"/>
+      <circle class="node" cx="150" cy="380" r="3"/>
+      <circle class="node" cx="340" cy="220" r="3"/>
+      <circle class="node" cx="60" cy="420" r="2.5"/>
+      <circle class="node" cx="380" cy="90" r="2.5"/>
+    </g>
+    <g class="cluster-b">
+      <line class="glow-line" x1="780" y1="150" x2="900" y2="260"/>
+      <line class="glow-line" x1="900" y1="260" x2="860" y2="400"/>
+      <line class="glow-line" x1="900" y1="260" x2="960" y2="150"/>
+      <line class="glow-line" x1="860" y1="400" x2="940" y2="470"/>
+      <line class="glow-line" x1="780" y1="150" x2="700" y2="90"/>
+      <circle class="node" cx="780" cy="150" r="3"/>
+      <circle class="node" cx="900" cy="260" r="4"/>
+      <circle class="node" cx="860" cy="400" r="3"/>
+      <circle class="node" cx="960" cy="150" r="2.5"/>
+      <circle class="node" cx="940" cy="470" r="2.5"/>
+      <circle class="node" cx="700" cy="90" r="2.5"/>
+    </g>
+  </svg>
+
+  <div class="hero-inner">
+    <p class="eyebrow hero-eyebrow">Para los que <em>no encajan</em></p>
+    <img class="hero-mark" src="poundyen-logo.png" alt="£¥ — Poundyen">
+    <h1 class="hero-word">POUNDYEN</h1>
+    <p class="hero-tagline">El club de los soñadores</p>
+  </div>
+
+  <div class="scroll-cue">
+    <span>Desliza</span>
+    <div class="line"></div>
+  </div>
+</header>
+
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-track">
+    <img class="ticker-mark" src="poundyen-logo.png" alt=""><span class="dim">EL CLUB DE LOS SOÑADORES</span>
+    <img class="ticker-mark" src="poundyen-logo.png" alt=""><span class="dim">PARA LOS QUE NO ENCAJAN</span>
+    <img class="ticker-mark" src="poundyen-logo.png" alt=""><span class="dim">EL CLUB DE LOS SOÑADORES</span>
+    <img class="ticker-mark" src="poundyen-logo.png" alt=""><span class="dim">PARA LOS QUE NO ENCAJAN</span>
+    <img class="ticker-mark" src="poundyen-logo.png" alt=""><span class="dim">EL CLUB DE LOS SOÑADORES</span>
+    <img class="ticker-mark" src="poundyen-logo.png" alt=""><span class="dim">PARA LOS QUE NO ENCAJAN</span>
+  </div>
+</div>
+
+<section class="manifesto" id="manifiesto">
+  <img class="manifesto-watermark" src="poundyen-logo.png" alt="" aria-hidden="true">
+  <h2 class="manifesto-head">
+    <span class="reveal-line"><span>¿CREES EN TI</span></span>
+    <span class="reveal-line"><span>REALMENTE?</span></span>
+  </h2>
+
+  <div class="manifesto-body">
+    <p>No en la versión que enseñás cuando todo va bien. En la que sigue de pie después de un día entero — sin recursos, sin contactos, sin un plan B esperando por si esto no funciona.</p>
+    <p>Esta marca no es para los que ya lo tienen todo resuelto. Es para los que suman horas donde nadie los ve, <strong>antes y después</strong> de lo que se supone que deberían estar haciendo.</p>
+    <p class="wide">El club de los soñadores no se pide. Se gana, un día a la vez — con lo que tengas, desde donde estés.</p>
+  </div>
+</section>
+
+<section class="drop" id="drop">
+  <div class="drop-grid">
+    <div class="drop-copy">
+      <p class="eyebrow">Próximo drop · 001</p>
+      <h3 class="drop-title">La primera prenda <span class="accent">del club.</span></h3>
+      <p>No es solo una camiseta. Es la primera prueba física de que esto — la marca, el club, el sueño — puede ser real. Diseñada para los que llevan el esfuerzo puesto, aunque nadie más lo vea.</p>
+      <p><strong>Sé de los primeros en enterarte</strong> cuando abramos las puertas. Sin spam, sin ruido de más — solo el aviso cuando esté listo.</p>
+    </div>
+    <div class="video-frame">
+      <span class="video-tag"><i>●</i>Teaser</span>
+      <video controls preload="metadata" poster="poundyen-drop-poster.jpg" playsinline>
+        <source src="poundyen-teaser.mp4" type="video/mp4">
+        Tu navegador no puede reproducir este video.
+      </video>
+    </div>
+  </div>
+</section>
+
+<section class="join" id="unete">
+  <div class="join-inner">
+    <img class="join-mark" src="poundyen-logo.png" alt="" aria-hidden="true">
+    <p class="eyebrow">Entrar al club</p>
+    <h3 class="join-title">No es para todos. <span class="accent">Puede que sí para vos.</span></h3>
+    <p class="join-sub">Dejá tu correo y sé de los primeros en saber cuándo abre el drop — antes que nadie más.</p>
+
+    <form class="join-form" id="joinForm">
+      <input type="email" id="joinEmail" placeholder="tu@correo.com" required aria-label="Correo electrónico">
+      <button type="submit" class="join-btn">Entrar al club</button>
+    </form>
+    <div class="join-confirm" id="joinConfirm">Estás <em>dentro</em>. Te avisamos primero cuando el drop esté listo.</div>
+    <p class="join-note">Cero spam. Solo lo importante.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="foot-mark">
+    <img src="poundyen-logo.png" alt="Poundyen">
+    <span>POUNDYEN — El club de los soñadores</span>
+  </div>
+  <div class="foot-links">
+    <a href="#" rel="noopener">Instagram</a>
+    <a href="#" rel="noopener">TikTok</a>
+    <a href="#" rel="noopener">YouTube</a>
+  </div>
+  <p class="foot-copy">© 2026 Poundyen. Todos los derechos reservados.</p>
+</footer>
+
+<script>
+  // nav background on scroll
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 40);
+  }, { passive:true });
+
+  // scroll reveal
+  const revealEls = document.querySelectorAll('.reveal-line, .manifesto-body p');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting){
+        entry.target.classList.add('is-visible');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.35 });
+  revealEls.forEach(el => io.observe(el));
+
+  // waitlist form (front-end only — sin backend conectado)
+  const form = document.getElementById('joinForm');
+  const confirm = document.getElementById('joinConfirm');
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    form.classList.add('hide');
+    confirm.classList.add('show');
+  });
+</script>
+
+</body>
+</html>
